@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+
+{% block title %}
+    {{page_title}}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{page_title}}</h1>
+
+    {% buttons %}
+	    <a href="{% url 'board:input' %}">
+	    	<button type="submit" class="btn btn-primary">input</button>
+	    </a>
+    {% endbuttons %}
+
+	    {% for barang in semua_barang %}
+	    	{{barang.nama}}<br>
+	    	{{barang.jumlah}}<br>
+	    	{{barang.jenis}}<br>
+	    	<img src="{{barang.bukti.url}}" style="width: 100%;" />
+	    	{{barang.keterangan}}<br>
+	    {% endfor %}
+	    
+{% endblock content %}
