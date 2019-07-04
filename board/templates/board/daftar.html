@@ -17,18 +17,16 @@
 {% block content %}
     <h1>{{page_title}}</h1>
 
-    {% buttons %}
-	    <a href="{% url 'board:input' %}">
-	    	<button type="submit" class="btn btn-primary">input</button>
-	    </a>
-    {% endbuttons %}
-
+	    <a href="{% url 'board:input' %}" class="btn btn-primary">input</a>
+	    <br>
 	    {% for barang in semua_barang %}
-	    	{{barang.nama}}<br>
-	    	{{barang.jumlah}}<br>
-	    	{{barang.jenis}}<br>
-	    	<img src="{{barang.bukti.url}}" style="width: 100%;" />
-	    	{{barang.keterangan}}<br>
+	    	{{forloop.counter}}.
+	    	{{barang.nama}}
+	    	{{barang.jumlah}}
+	    	{{barang.jenis}}
+	    	<img src="{{barang.bukti_diterima.url}}" style="width: 300px;" />
+	    	{{barang.keterangan}}
+	    	<a href="{% url 'board:delete' barang.id %}" class="btn btn-danger">delete</a>
 	    {% endfor %}
-	    
+
 {% endblock content %}

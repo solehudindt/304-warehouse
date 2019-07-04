@@ -9,6 +9,6 @@ class FormBarang(forms.ModelForm):
 			'nama',
 			'jumlah',
 			'jenis',
-			'bukti',
+			'bukti_diterima',
 			'keterangan',
 		)

@@ -20,6 +20,10 @@ def form_barang(request):
         'form': form,
     })
 
+def delete(request, barang_id):
+	Barang.objects.filter(pk=barang_id).delete()
+	return redirect('board:index')
+
 def list(request):
 	semua_barang = Barang.objects.all()
 
