@@ -1,15 +1,5 @@
 {% extends "base.html" %}
 
-{% load bootstrap4 %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
-
 {% block title %}
     {{page_title}}
 {% endblock title %}
@@ -21,12 +11,13 @@
 	    <br>
 	    {% for barang in semua_barang %}
 	    	{{forloop.counter}}.
-	    	{{barang.nama}}
+	    	{{barang.nama_barang}}
 	    	{{barang.jumlah}}
 	    	{{barang.jenis}}
 	    	<img src="{{barang.bukti_diterima.url}}" style="width: 300px;" />
 	    	{{barang.keterangan}}
 	    	<a href="{% url 'board:delete' barang.id %}" class="btn btn-danger">delete</a>
+	    	<a href="{% url 'board:update' barang.id %}" class="btn btn-secondary">update</a>
 	    {% endfor %}
 
 {% endblock content %}
