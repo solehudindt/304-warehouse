@@ -7,7 +7,8 @@
 {% block content %}
     <h1>{{page_title}}</h1>
 
-	    <a href="{% url 'board:input' %}" class="btn btn-primary">input</a>
+		<a href="{% url 'board:input' %}" class="btn btn-primary">input</a>
+		<a href="{% url 'logout' %}" class="btn btn-warning">logout</a>
 	    <br>
 	    {% for barang in semua_barang %}
 	    	{{forloop.counter}}.
@@ -16,7 +17,7 @@
 	    	{{barang.jenis}}
 	    	<img src="{{barang.bukti_diterima.url}}" style="width: 300px;" />
 	    	{{barang.keterangan}}
-	    	<a href="{% url 'board:delete' barang.id %}" class="btn btn-danger">delete</a>
+	    	<a href="{% url 'board:delete' barang.id %}" class="btn btn-warning">delete</a>
 	    	<a href="{% url 'board:update' barang.id %}" class="btn btn-secondary">update</a>
 	    {% endfor %}
 

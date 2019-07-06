@@ -115,7 +115,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'board:user_login'
+LOGIN_REDIRECT_URL = 'board:index'
 
 
 # Static files (CSS, JavaScript, Images)
