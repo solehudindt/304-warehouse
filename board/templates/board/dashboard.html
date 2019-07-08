@@ -8,9 +8,15 @@
 <div class="container" style="padding-top:30px;">
     Selamat datang {{active_user}}
   <div class="row" style="padding-top:30px;">
-    <div class="col-lg-6">
+    <div class="col-lg-6 border border-secondary" style="padding-top:30px;">
     	<p>
+    		
       		Jumlah Barang Saat Ini : {{jumlah}}
+      		<br>
+      		Barang Masuk : {{masuk}}
+      		<br>
+      		Barang Keluar : {{keluar}}
+      		</span>
   		</p>
     </div>
     <div class="col-lg-6">
@@ -53,8 +59,8 @@
     {% endif %}
   </ul>
 	{% endif %}
-    
   	</div>
-  	 <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">logout</a>
+
 </div>
+<div class="text-center" style="padding-top:30px;"><a href="{% url 'logout' %}" class="btn btn-danger btn-sm">logout</a></div>
 {% endblock content %}

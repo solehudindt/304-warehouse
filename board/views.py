@@ -10,12 +10,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
 	return render(request, 'index.html')
+
 @login_required
 def dashboard(request):
     list_barang = Barang.objects.all()
     page = request.GET.get('page', 1)
     active_user = request.user.username
-    num = request.session.get('x')
+    num = request.session.get('i')
+    masuk = request.session.get('masuk')
+    keluar = request.session.get('keluar')
     paginator = Paginator(list_barang, 5)
     try:
         semua_barang = paginator.page(page)
@@ -29,6 +32,8 @@ def dashboard(request):
         'semua_barang':semua_barang,
         'active_user':active_user,
         'jumlah':num,
+        'masuk':masuk,
+        'keluar':keluar,
     }
     return render(request, 'board/dashboard.html', context)
 
@@ -78,7 +83,9 @@ def daftar(request):
 @login_required
 def form_barang(request):
     
-    num = request.session.get('x')
+    num = request.session.get('i')
+    masuk = request.session.get('masuk')
+    keluar = request.session.get('keluar')
 
     if request.method == 'POST':
         form = FormBarang(request.POST, request.FILES)
@@ -88,12 +95,12 @@ def form_barang(request):
             tipe = request.POST['jenis']
             if tipe == 'masuk':
                 print("halooo!!!")
-                request.session['x'] = num + form.cleaned_data['jumlah']
-                print(request.session['x'])
+                request.session['i'] = num + form.cleaned_data['jumlah']
+                request.session['masuk'] = masuk + form.cleaned_data['jumlah']
             else:
                 print("holaaaa!!!")
-                request.session['x'] = num - form.cleaned_data['jumlah']
-                print(request.session['x'])
+                request.session['i'] = num - form.cleaned_data['jumlah']
+                request.session['keluar'] = keluar + form.cleaned_data['jumlah']
             form.save()
             return redirect('board:index')
     else:
@@ -106,7 +113,7 @@ def form_barang(request):
 @login_required
 def list(request):
     list_barang = Barang.objects.all()
-    num = request.session.get('x')
+    num = request.session.get('i')
     page = request.GET.get('page', 1)
     paginator = Paginator(list_barang, 8)
 
