@@ -1,17 +1,39 @@
 {% extends 'base.html' %}
+
+{% block title %}
+        {{page_title}}
+    {% endblock title %}
 {% block content %}
-  <div class="container">
-    <div class="jumbotron">
-      <h1>Login here :</h1>
-        <form method="post" action="{% url 'board:user_login' %}">
-            {% csrf_token %}
-            {# A more "HTML" way of creating the login form#}
-            <label for="username">Username:</label>
-                <input type="text" name="username" placeholder="Username">
-            <label for="password">Password:</label>
-                <input type="password" name="password" placeholder="Password">
-            <input type="submit" name="" value="Login">
-        </form>
-    </div>
-  </div>
+<div class="container">
+
+<div class="row">
+  <div class="col-sm-4"></div>
+  <aside class="col-sm-4">
+<h4>Login<h4>
+<div class="card">
+<article class="card-body">
+<a href="{% url 'board:daftar' %}" class="float-right btn btn-outline-primary">Sign up</a>
+<h4 class="card-title mb-4 mt-1">Sign in</h4>
+   <form method="post" action="{% url 'board:user_login' %}">
+  {% csrf_token %}
+    <div class="form-group">
+      <label>Username</label>
+        <input name="username" class="form-control" placeholder="Username" type="text">
+    </div> <!-- form-group// -->
+    <div class="form-group">
+      <label>Password</label>
+        <input name="password" class="form-control" placeholder="******" type="password">
+    </div> <!-- form-group// --> 
+    <div class="form-group"> 
+    <div class="checkbox">
+      <label> <input type="checkbox"> Save password </label>
+    </div> <!-- checkbox .// -->
+    </div> <!-- form-group// -->  
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+    </div> <!-- form-group// -->                                                           
+</form>
+</article>
+</div>
+
 {% endblock %}

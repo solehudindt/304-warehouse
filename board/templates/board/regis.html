@@ -1,20 +1,40 @@
 {% extends "base.html" %}
+    {% load bootstrap4 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    {% block title %}
+        {{page_title}}
+    {% endblock title %}
 
 {% block content %}
-  <div class="container">
-    <div class="jumbotron">
-      {% if registered %}
-        <h1>Thank you for registering!</h1>
-      {% else %}
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
-<form enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
-          {{ user_form.as_p }}
-          <input type="submit" name="" value="Register">
-        </form>
-        
-      {% endif %}
-    </div>
-  </div>
+<div class="container">
+
+<div class="row">
+  <div class="col-sm-4"></div>
+  <aside class="col-sm-5">
+<h4>Sign Up<h4>
+<div class="card">
+<article class="card-body">
+  {% if registered %}
+    <h1>Terimakasih sudah mendaftar</h1>
+  {% else %}
+    <h1>Daftar di sini</h1>
+   <form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+   {{ user_form.as_p }}
+   {% buttons %}
+    <button type="submit" class="btn btn-primary btn-block"> Daftar  </button>
+    {% endbuttons %}
+   </form>
+    {% endif %}
+</form>
+</article>
+</div>
+
 {% endblock %}

@@ -2,10 +2,16 @@
 
 {% block title %}
     304 Warehouse
-
 {% endblock title %}
 
 {% block content %}
-    <h1>304 Warehouse</h1>
-    <p><a href="{% url 'board:daftar' %}" class="btn btn-primary">Daftar</a></p>
+	<div class="container" style="padding-top:30px;">
+		<div class="jumbotron text-center">
+    <h1>Selamat Datang Di 304 Warehouse</h1>
+    <p>Silahkan login atau daftar terlebih dahulu untuk bisa melakuan transaksi</p>
+    <p>
+    	<a href="{% url 'board:daftar' %}" class="btn btn-success">Daftar</a>
+    	<a href="{% url 'board:user_login' %}" class="btn btn-primary">Login</a>
+    </p>
+</div>
 {% endblock content %}

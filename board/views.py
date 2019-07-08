@@ -1,13 +1,36 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm
+from .forms import UserForm, FormBarang
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Barang
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
+
 
 def index(request):
 	return render(request, 'index.html')
+@login_required
+def dashboard(request):
+    list_barang = Barang.objects.all()
+    page = request.GET.get('page', 1)
+    active_user = request.user.username
+    num = request.session.get('x')
+    paginator = Paginator(list_barang, 5)
+    try:
+        semua_barang = paginator.page(page)
+    except PageNotAnInteger:
+        semua_barang = paginator.page(1)
+    except EmptyPage:
+        semua_barang = paginator.page(paginator.num_pages)
+
+    context = {
+        'page_title':'Dashboard',
+        'semua_barang':semua_barang,
+        'active_user':active_user,
+        'jumlah':num,
+    }
+    return render(request, 'board/dashboard.html', context)
 
 def user_login(request):
     if request.method == 'POST':
@@ -25,7 +48,7 @@ def user_login(request):
             print("They used username: {} and password: {}".format(username,password))
             return HttpResponse("Invalid login details given")
     else:
-        return render(request, 'board/login.html', {})
+        return render(request, 'board/login.html', {'page_title': 'Login'})
 
 @login_required
 def user_logout(request):
@@ -47,15 +70,30 @@ def daftar(request):
     else:
         user_form = UserForm()
     return render(request,'board/regis.html',{
+                            'page_title':'Sign Up',
 							'user_form':user_form,
                            'registered':registered})
 
 
 @login_required
 def form_barang(request):
+    
+    num = request.session.get('x')
+
     if request.method == 'POST':
         form = FormBarang(request.POST, request.FILES)
+
         if form.is_valid():
+
+            tipe = request.POST['jenis']
+            if tipe == 'masuk':
+                print("halooo!!!")
+                request.session['x'] = num + form.cleaned_data['jumlah']
+                print(request.session['x'])
+            else:
+                print("holaaaa!!!")
+                request.session['x'] = num - form.cleaned_data['jumlah']
+                print(request.session['x'])
             form.save()
             return redirect('board:index')
     else:
@@ -67,14 +105,24 @@ def form_barang(request):
 
 @login_required
 def list(request):
-	semua_barang = Barang.objects.all()
+    list_barang = Barang.objects.all()
+    num = request.session.get('x')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(list_barang, 8)
 
-	context = {
-		'page_title':'Daftar Barang',
+    try:
+        semua_barang = paginator.page(page)
+    except PageNotAnInteger:
+        semua_barang = paginator.page(1)
+    except EmptyPage:
+        semua_barang = paginator.page(paginator.num_pages)
+
+    context = {
+		'page_title':'Aktivitas Terbaru',
 		'semua_barang':semua_barang,
+        'jumlah':num,
 	}
-
-	return render(request, 'board/list.html', context)
+    return render(request, 'board/list.html', context)
 
 @login_required
 def update(request, barang_id):

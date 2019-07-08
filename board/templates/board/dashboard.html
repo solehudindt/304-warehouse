@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+    {{page_title}}
+{% endblock title %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+<div class="container" style="padding-top:30px;">
+    Selamat datang {{active_user}}
+  <div class="row" style="padding-top:30px;">
+    <div class="col-lg-6">
+    	<p>
+      		Jumlah Barang Saat Ini : {{jumlah}}
+  		</p>
+    </div>
+    <div class="col-lg-6">
+    <table class="table table-striped">
+      <tbody>
+	  {% for barang in semua_barang %}
+	    <tr>
+	      <th>{{barang.nama_barang}}</th>
+	      <td>
+	      {% if barang.jenis == 'masuk' %}
+	          <span style="color: green;">+{{barang.jumlah}}</span>
+	      {% else %}
+	      	  <span style="color: red;">-{{barang.jumlah}}</span>
+	      {% endif %}
+	      </td>
+
+	  	</tr>
+	  {% endfor %}
+	  </tbody>
+	</table>
+
+	{% if semua_barang.has_other_pages %}
+  		<ul class="pagination">
+    {% if semua_barang.has_previous %}
+      <li><a href="?page={{ semua_barang.previous_page_number }}">«</a></li>
+    {% else %}
+      <li class="disabled"><span>«</span></li>
+    {% endif %}
+    {% for i in semua_barang.paginator.page_range %}
+      {% if semua_barang.number == i %}
+        <li class="active"><span>{{ i }}- <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if semua_barang.has_next %}
+      <li><a href="?page={{ semua_barang.next_page_number }}">»</a></li>
+    {% else %}
+      <li class="disabled"><span>»</span></li>
+    {% endif %}
+  </ul>
+	{% endif %}
+    
+  	</div>
+  	 <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">logout</a>
+</div>
+{% endblock content %}

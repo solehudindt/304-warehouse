@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
+    'bootstrap_modal_forms',
     'board',
 ]
 
@@ -116,7 +117,7 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = 'board:user_login'
-LOGIN_REDIRECT_URL = 'board:index'
+LOGIN_REDIRECT_URL = 'board:dashboard'
 
 
 # Static files (CSS, JavaScript, Images)

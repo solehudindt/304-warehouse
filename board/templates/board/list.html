@@ -1,24 +1,90 @@
 {% extends "base.html" %}
 
+	<script src="http://malsup.github.com/jquery.form.js"></script>
+
 {% block title %}
     {{page_title}}
 {% endblock title %}
 
 {% block content %}
-    <h1>{{page_title}}</h1>
+	{% include 'navbar.html' %}
+	<div class="container" style="padding-top:30px;">
+    <h2>{{page_title}}</h2>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    		sfdsfds
+    </div>
+  </div>
+</div>
+
+<!-- Create book button -->
+<button class="create-book btn btn-primary" type="button" name="button">Create Book</button>
 
 		<a href="{% url 'board:input' %}" class="btn btn-primary">input</a>
 		<a href="{% url 'logout' %}" class="btn btn-warning">logout</a>
 	    <br>
-	    {% for barang in semua_barang %}
-	    	{{forloop.counter}}.
-	    	{{barang.nama_barang}}
-	    	{{barang.jumlah}}
-	    	{{barang.jenis}}
-	    	<img src="{{barang.bukti_diterima.url}}" style="width: 300px;" />
-	    	{{barang.keterangan}}
-	    	<a href="{% url 'board:delete' barang.id %}" class="btn btn-warning">delete</a>
-	    	<a href="{% url 'board:update' barang.id %}" class="btn btn-secondary">update</a>
-	    {% endfor %}
+	    <table class="table table-striped">
+			 <thead>
+			    <tr>
+			      <th scope="col">Nama Barang</th>
+			      <th scope="col">Jumlah</th>
+			      <th scope="col">Jenis</th>
+			      <th scope="col">File</th>
+			      <th scope="col">Aksi</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  {% for barang in semua_barang %}
+			    <tr>
+			      <th>{{barang.nama_barang}}</th>
+			      <td>{{barang.jumlah}}</td>
+			      <td>{{barang.jenis}}</td>
+			      <td>
+			      	{% if barang.bukti_diterima %}
+	    				Ada
+	    			{% else %}
+	    				Tidak Ada
+	    			{% endif %}
+	    		  </td>
+			      <td>
+			      	<a href="{% url 'board:update' barang.id %}" class="btn btn-success">edit</a>
+			      	<a href="{% url 'board:delete' barang.id %}" class="btn btn-danger" onclick="return confirm('Yakin menghapus item ini?')">hapus</a>
+	    		  </td>
+			    </tr>
+			  {% endfor %}
+			  </tbody>
+		</table>
+		{% if semua_barang.has_other_pages %}
+  			<ul class="pagination">
+   		{% if semua_barang.has_previous %}
+      		<li><a href="?page={{ semua_barang.previous_page_number }}">«</a></li>
+    	{% else %}
+      		<li class="disabled"><span>«</span></li>
+    	{% endif %}
+    	{% for i in semua_barang.paginator.page_range %}
+      	{% if semua_barang.number == i %}
+        	<li class="active"><span>{{ i }}- <span class="sr-only">(current)</span></span></li>
+      	{% else %}
+        	<li><a href="?page={{ i }}">{{ i }}</a></li>
+      	{% endif %}
+    	{% endfor %}
+    	{% if semua_barang.has_next %}
+      		<li><a href="?page={{ semua_barang.next_page_number }}">»</a></li>
+    	{% else %}
+      	<li class="disabled"><span>»</span></li>
+    	{% endif %}
+  </ul>
+{% endif %}
+	    
+	</div>
+<script type="text/javascript">
+$(document).ready(function() {
 
+    $(".create-book").modalForm({
+        formURL: "{% url 'board:input' %}"
+    });
+
+});
+</script>
 {% endblock content %}
