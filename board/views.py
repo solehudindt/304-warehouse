@@ -16,9 +16,7 @@ def dashboard(request):
     list_barang = Barang.objects.all()
     page = request.GET.get('page', 1)
     active_user = request.user.username
-    num = request.session.get('i')
-    masuk = request.session.get('masuk')
-    keluar = request.session.get('keluar')
+
     paginator = Paginator(list_barang, 5)
     try:
         semua_barang = paginator.page(page)
@@ -31,9 +29,6 @@ def dashboard(request):
         'page_title':'Dashboard',
         'semua_barang':semua_barang,
         'active_user':active_user,
-        'jumlah':num,
-        'masuk':masuk,
-        'keluar':keluar,
     }
     return render(request, 'board/dashboard.html', context)
 
@@ -79,7 +74,6 @@ def daftar(request):
 							'user_form':user_form,
                            'registered':registered})
 
-
 @login_required
 def form_barang(request):
     
@@ -95,12 +89,12 @@ def form_barang(request):
             tipe = request.POST['jenis']
             if tipe == 'masuk':
                 print("halooo!!!")
-                request.session['i'] = num + form.cleaned_data['jumlah']
-                request.session['masuk'] = masuk + form.cleaned_data['jumlah']
+                request.POST['total'] += form.cleaned_data['jumlah']
+                request.POST['masuk'] += form.cleaned_data['jumlah']
             else:
                 print("holaaaa!!!")
-                request.session['i'] = num - form.cleaned_data['jumlah']
-                request.session['keluar'] = keluar + form.cleaned_data['jumlah']
+                request.POST['total'] -= form.cleaned_data['jumlah']
+                request.POST['keluar'] += form.cleaned_data['jumlah']
             form.save()
             return redirect('board:index')
     else:
